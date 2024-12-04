@@ -1,271 +1,143 @@
-<!DOCTYPE html>
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UFL Inspired Website</title>
-  <!-- <link rel="stylesheet" href="styles.css"> -->
-  <style>
-    /* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Project Landing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f9fc;
+        }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background: #1a1a1a;
-  color: #fff;
-}
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #000;
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-}
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3c5a9a;
+        }
 
-.header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
+        header nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #3c5a9a;
+            font-size: 16px;
+        }
 
-.nav ul {
-  list-style: none;
-  display: flex;
-}
+        header nav a:hover {
+            text-decoration: underline;
+        }
 
-.nav ul li {
-  margin-left: 1.5rem;
-}
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px;
+            background-color: #e9f4ff;
+        }
 
-.nav ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1rem;
-}
+        .hero .text {
+            max-width: 50%;
+        }
 
-.preorder-btn {
-  background: #ff4757;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+        .hero h1 {
+            font-size: 48px;
+            color: #333;
+        }
 
-.preorder-btn:hover {
-  background: #ff6b81;
-}
+        .hero h1 span {
+            color: #3c5a9a;
+        }
 
-/* Hero Section */
-.hero {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #fff;
-  background: linear-gradient(90deg, #ff6b81, #1a1a1a), url('https://wallpapercave.com/wp/wp14429411.jpg') no-repeat center/cover;
-}
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin: 20px 0;
+        }
 
-.hero-content h1 {
-  font-size: 4rem;
-}
+        .hero .buttons a {
+            display: inline-block;
+            margin: 10px 10px 0 0;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #fff;
+            background-color: #3c5a9a;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-.hero-content h2 {
-  font-size: 2.5rem;
-  margin-top: 1rem;
-}
+        .hero .buttons a:hover {
+            background-color: #2d4373;
+        }
 
-.hero-content p {
-  margin: 1rem 0;
-}
+        .hero .image img {
+            max-width: 100%;
+        }
 
-.arrow-down {
-  margin-top: 2rem;
-  font-size: 2rem;
-}
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
 
-/* Features Section */
-.features {
-  padding: 2rem;
-  background: #2c2c2c;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.feature-item {
-  background: #333;
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.feature-item img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-}
-
-/* Video Section */
-.video-section {
-  padding: 2rem;
-  text-align: center;
-  background: #1a1a1a;
-}
-
-.video-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-iframe {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/* Footer */
-.footer {
-  background: #000;
-  text-align: center;
-  padding: 1rem;
-}
-
-.footer a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 1rem;
-}
-
-  </style>
-  <style>
-    /* Inline CSS to handle the background */
-    .hero {
-      background: url("https://wallpapercave.com/wp/wp14429411.jpg") no-repeat center center/cover;
-      position: relative;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .background-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5); /* Add a dark overlay for better text visibility */
-      z-index: 1;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    
-  </style>
+        footer p {
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="logo">UFL</div>
-      <nav class="nav">
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#news">News</a></li>
-          <li><a href="#trailer">Trailer</a></li>
-          <li><a href="#support">Support</a></li>
-        </ul>
-      </nav>
-      <button class="preorder-btn">Pre-Order Now</button>
-    </div>
-  </header>
+    <header>
+        <div class="logo">CodeWithCloud</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <h1>PRE-ORDER</h1>
-      <h2>UFL Bundles</h2>
-      <p>Start playing November 28 with the UFL pre-order Bundle!</p>
-      <p>UFL will be released for everyone to play on December 5, 2024</p>
-      <div class="arrow-down">&#x2193;</div>
-    </div>
-    <div class="background-overlay"></div>
-  </section>
-
-  <!-- Features Section -->
-  <section id="news" class="features">
-    <div class="container">
-      <h2>Latest News</h2>
-      <div class="features-grid">
-        <div class="feature-item">
-          <img src="https://images8.alphacoders.com/138/thumbbig-1384257.webp" alt="Feature Image 1">
-          <h3>Game Updates</h3>
-          <p>Stay updated with the latest news and announcements.</p>
+    <section class="hero">
+        <div class="text">
+            <h1>Welcome to <span>CloudWorld</span><br> I'm <span>Cloud Developer</span></h1>
+            <p>Build scalable, secure, and modern cloud solutions with our expertise. Join us to explore limitless possibilities in the cloud.</p>
+            <div class="buttons">
+                <a href="#">Explore Projects</a>
+                <a href="#">Documentation</a>
+            </div>
         </div>
-        <div class="feature-item">
-          <img src="https://images2.alphacoders.com/138/thumbbig-1384256.webp" alt="Feature Image 2">
-          <h3>Exclusive Bundles</h3>
-          <p>Explore exclusive pre-order bundles and rewards.</p>
+        <div class="image">
+            <img src="https://via.placeholder.com/500x300" alt="Cloud Illustration">
         </div>
-        <div class="feature-item">
-          <img src="https://images2.alphacoders.com/138/thumbbig-1384258.webp" alt="Feature Image 3">
-          <h3>Community Events</h3>
-          <p>Join events and engage with the UFL community.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Video Section -->
-  <section id="trailer" class="video-section">
-    <h2>Watch the Official Trailer</h2>
-    <div class="video-container">
-      <iframe
-        width="100%"
-        height="500"
-        src="https://www.youtube.com/embed/-k2Vz0KEmnQ?si=26O_mplrrVxjfqlR"
-        title="UFL Trailer"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-links">
-      <a href="#policies">Game Policies</a>
-      <a href="#web-policies">Web Policies</a>
-    </div>
-  </footer>
-
-  <script>
-    // Interactive behavior for the pre-order button
-document.querySelector('.preorder-btn').addEventListener('click', () => {
-  alert('Pre-order feature coming soon!');
-});
-
-  </script>
-  <!-- <script src="script.js"></script> -->
+    <footer>
+        <p>&copy; 2024 CloudWorld. All rights reserved.</p>
+    </footer>
 </body>
 </html>
+"""
+
+@app.route('/')
+def home():
+    return render_template_string(html_content)
+
+if __name__ == '__main__':
+    app.run(debug=True)
